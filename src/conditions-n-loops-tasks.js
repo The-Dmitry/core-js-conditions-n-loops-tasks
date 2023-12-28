@@ -414,8 +414,36 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  function heapify(array, n, i) {
+    const temp = array;
+    let largest = i;
+    const left = 2 * i + 1;
+    const right = 2 * i + 2;
+    if (left < n && temp[i] < temp[left]) {
+      largest = left;
+    }
+    if (right < n && temp[largest] < temp[right]) {
+      largest = right;
+    }
+    if (largest !== i) {
+      [temp[i], temp[largest]] = [temp[largest], temp[i]];
+      heapify(arr, n, largest);
+    }
+  }
+  const tempArr = arr;
+  let n = tempArr.length;
+
+  for (let i = Math.floor(n / 2); i >= 0; i -= 1) {
+    heapify(tempArr, n, i);
+  }
+  for (let i = n - 1; i > 0; i -= 1) {
+    [tempArr[0], tempArr[i]] = [tempArr[i], tempArr[0]];
+    n -= 1;
+    heapify(tempArr, n, 0);
+  }
+
+  return tempArr;
 }
 
 /**
