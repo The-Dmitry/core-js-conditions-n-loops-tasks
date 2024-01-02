@@ -508,7 +508,13 @@ function getNearestBigger(number) {
   }
   const g = arr.findLastIndex((v, i, a) => i > l && v > a[l]);
   [arr[l], arr[g]] = [arr[g], arr[l]];
-  return +[...arr.toSpliced(l + 1), ...arr.toSpliced(0, l + 1).sort()].join('');
+  return +[
+    ...Array.from({ length: l + 1 }, (v, i) => arr[i]),
+    ...Array.from(
+      { length: arr.length - 1 - l },
+      (_, i) => arr[Math.abs(i - (arr.length - 1))]
+    ).sort(),
+  ].join('');
 }
 
 module.exports = {
