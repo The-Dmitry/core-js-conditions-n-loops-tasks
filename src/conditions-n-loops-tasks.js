@@ -501,12 +501,21 @@ function shuffleChar(str, iterations) {
  * @returns {number} The nearest larger number, or original number if none exists.
  */
 function getNearestBigger(number) {
+  function reverseSearch(array, callback) {
+    for (let i = array.length - 1; i >= 0; i -= 1) {
+      if (callback(array[i], i, array)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   const arr = Array.from(`${number}`, (v) => +v);
-  const l = arr.findLastIndex((v, i, a) => v < a[i + 1]);
+  const l = reverseSearch(arr, (v, i, a) => v < a[i + 1]);
   if (l === -1) {
     return number;
   }
-  const g = arr.findLastIndex((v, i, a) => i > l && v > a[l]);
+  const g = reverseSearch(arr, (v, i, a) => i > l && v > a[l]);
   [arr[l], arr[g]] = [arr[g], arr[l]];
   return +[
     ...Array.from({ length: l + 1 }, (v, i) => arr[i]),
