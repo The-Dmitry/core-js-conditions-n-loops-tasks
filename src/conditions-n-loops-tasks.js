@@ -465,7 +465,6 @@ function sortByAsc(arr) {
  */
 function shuffleChar(str, iterations) {
   let result = str;
-
   for (let j = 0; j < iterations; j += 1) {
     let even = '';
     let odd = '';
@@ -501,8 +500,15 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const arr = Array.from(`${number}`, (v) => +v);
+  const l = arr.findLastIndex((v, i, a) => v < a[i + 1]);
+  if (l === -1) {
+    return number;
+  }
+  const g = arr.findLastIndex((v, i, a) => i > l && v > a[l] && v !== 1);
+  [arr[l], arr[g]] = [arr[g], arr[l]];
+  return +[...arr.toSpliced(l + 1), ...arr.toSpliced(0, l + 1).sort()].join('');
 }
 
 module.exports = {
